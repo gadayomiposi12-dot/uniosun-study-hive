@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>UNIOSUN Study Hive — by 4TIMZ</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{--g:#1a7a3c;--g2:#25a354;--g3:#d4f5e0;--gold:#f5c518;--dark:#0d1f14;--light:#f2faf5;--gray:#6b7280;--red:#e53e3e;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:'Nunito',sans-serif;background:var(--light);color:var(--dark);overflow-x:hidden;}
+
+/* AUTH */
+#auth{position:fixed;inset:0;background:var(--dark);z-index:9000;display:flex;align-items:center;justify-content:center;padding:1rem;}
+#auth.gone{display:none;}
+.abox{background:white;border-radius:22px;padding:2.2rem 1.8rem;width:100%;max-width:400px;box-shadow:0 30px 80px rgba(0,0,0,.5);}
+.alogo{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--g);text-align:center;margin-bottom:.2rem;}
+.alogo span{color:var(--gold);}
+.atag{text-align:center;font-size:.75rem;color:var(--gray);margin-bottom:1.5rem;}
+.atabs{display:flex;background:var(--light);border-radius:10px;padding:.25rem;margin-bottom:1.3rem;gap:.25rem;}
+.atab{flex:1;padding:.5rem;border:none;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;background:none;color:var(--gray);transition:all .2s;}
+.atab.on{background:var(--g);color:white;}
+.aform{display:none;}.aform.on{display:block;}
+.afg{margin-bottom:.9rem;}
+.afg label{display:block;font-weight:800;font-size:.78rem;margin-bottom:.28rem;}
+.afg input,.afg select{width:100%;padding:.65rem .9rem;border:2px solid var(--g3);border-radius:10px;font-family:'Nunito',sans-serif;font-size:.88rem;outline:none;background:var(--light);}
+.afg input:focus,.afg select:focus{border-color:var(--g);}
+.arow{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+.pwrap{position:relative;}
+.peye{position:absolute;right:.7rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:.95rem;}
+.pbar{height:4px;border-radius:2px;margin-top:.35rem;transition:all .3s;width:0;}
+.abtn{width:100%;background:var(--g);color:white;border:none;border-radius:30px;padding:.8rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:4px 4px 0 var(--dark);margin-top:.4rem;}
+.abtn:hover{opacity:.92;}
+.adiv{text-align:center;color:var(--gray);font-size:.75rem;margin:.8rem 0;position:relative;}
+.adiv::before,.adiv::after{content:'';position:absolute;top:50%;width:35%;height:1px;background:var(--g3);}
+.adiv::before{left:0;}.adiv::after{right:0;}
+.agoog{width:100%;background:white;color:var(--dark);border:2px solid var(--g3);border-radius:30px;padding:.7rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.45rem;}
+.agoog:hover{border-color:var(--g);}
+.aerr{background:#fef2f2;border:1.5px solid #fca5a5;border-radius:8px;padding:.5rem .8rem;font-size:.78rem;color:var(--red);font-weight:700;margin-bottom:.7rem;display:none;}
+.aerr.on{display:block;}
+.aok{background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:.5rem .8rem;font-size:.78rem;color:var(--g);font-weight:700;margin-bottom:.7rem;display:none;}
+.aok.on{display:block;}
+.asmall{font-size:.7rem;color:var(--gray);text-align:center;margin-top:.7rem;}
+.forgot{font-size:.75rem;color:var(--g);font-weight:700;text-align:right;display:block;cursor:pointer;margin-top:.25rem;}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:500;background:var(--dark);border-bottom:3px solid var(--gold);display:flex;align-items:center;justify-content:space-between;padding:.65rem 4%;}
+.nlogo{font-family:'Fredoka One',cursive;font-size:1.2rem;color:var(--gold);display:flex;align-items:center;gap:5px;cursor:pointer;}
+.nlogo span{color:white;}
+.nlinks{display:flex;gap:.1rem;align-items:center;}
+.nl{background:none;border:none;color:white;font-family:'Nunito',sans-serif;font-weight:700;font-size:.78rem;padding:.4rem .65rem;border-radius:7px;cursor:pointer;transition:background .2s,color .2s;white-space:nowrap;}
+.nl:hover,.nl.on{background:var(--g2);color:var(--gold);}
+.nl.cta{background:var(--gold);color:var(--dark);border-radius:18px;}
+.nl.cta:hover{background:#e6b800;}
+.hburg{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px;}
+.hburg div{width:23px;height:2.5px;background:var(--gold);border-radius:2px;}
+.nusr{display:none;align-items:center;gap:.4rem;background:rgba(255,255,255,.1);border-radius:18px;padding:.25rem .7rem .25rem .35rem;cursor:pointer;position:relative;}
+.nusr.show{display:flex;}
+.nav-av{width:26px;height:26px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;color:var(--dark);}
+.nav-nm{font-size:.78rem;font-weight:800;color:white;}
+.ndrop{position:absolute;top:42px;right:0;background:white;border:2px solid var(--g3);border-radius:12px;padding:.4rem;box-shadow:0 10px 30px rgba(0,0,0,.15);display:none;min-width:170px;z-index:600;}
+.ndrop.open{display:block;}
+.ditem{display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;transition:background .15s;}
+.ditem:hover{background:var(--g3);color:var(--g);}
+.ditem.red{color:var(--red);}
+.ddiv{height:1px;background:var(--g3);margin:.3rem 0;}
+
+/* MOB MENU */
+.mob{display:none;position:fixed;inset:0;background:var(--dark);z-index:600;flex-direction:column;align-items:center;justify-content:center;gap:1rem;}
+.mob.open{display:flex;}
+.mobx{position:absolute;top:1.2rem;right:1.3rem;background:none;border:none;color:var(--gold);font-size:1.7rem;cursor:pointer;}
+
+/* PAGES */
+.pg{display:none;min-height:100vh;padding-top:63px;}
+.pg.on{display:block;}
+
+/* HERO */
+#pg-home{background:var(--dark);}
+.hero{min-height:calc(100vh - 63px);display:flex;align-items:center;padding:3rem 6%;position:relative;overflow:hidden;}
+.hbg .hc{position:absolute;border-radius:50%;opacity:.07;}
+.hc1{width:500px;height:500px;background:var(--g2);top:-120px;right:-100px;}
+.hc2{width:260px;height:260px;background:var(--gold);bottom:-40px;left:-70px;}
+.hc3{width:170px;height:170px;background:var(--g2);top:45%;left:38%;animation:bob 7s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-22px)}}
+.hcont{position:relative;z-index:2;max-width:620px;}
+@keyframes up{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hbadge{display:inline-block;background:var(--gold);color:var(--dark);font-weight:800;font-size:.76rem;padding:.28rem .9rem;border-radius:18px;margin-bottom:.85rem;animation:up .6s .1s both;}
+.hero h1{font-family:'Fredoka One',cursive;font-size:clamp(2.3rem,5.5vw,3.8rem);color:white;line-height:1.1;margin-bottom:.85rem;animation:up .6s .2s both;}
+.hero h1 .hl{color:var(--gold);}
+.byline{color:var(--gold);font-weight:800;font-size:.8rem;margin-bottom:.9rem;animation:up .6s .25s both;}
+.hsub{color:#a3c4b0;font-size:.97rem;line-height:1.75;max-width:500px;margin-bottom:1.4rem;animation:up .6s .3s both;}
+.hbtns{display:flex;gap:.75rem;flex-wrap:wrap;animation:up .6s .35s both;}
+.btn{font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;padding:.72rem 1.5rem;border-radius:38px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;border:none;transition:transform .15s,box-shadow .15s;}
+.bgold{background:var(--gold);color:var(--dark);box-shadow:4px 4px 0 rgba(255,255,255,.15);}
+.bgold:hover{transform:translate(-2px,-2px);}
+.bout{background:transparent;color:white;border:2px solid var(--g2);}
+.bout:hover{background:var(--g2);}
+.bgreen{background:var(--g);color:white;box-shadow:4px 4px 0 var(--dark);}
+.bgreen:hover{transform:translate(-2px,-2px);}
+.hstats{display:flex;gap:1.8rem;margin-top:1.7rem;animation:up .6s .45s both;}
+.hstat strong{font-family:'Fredoka One',cursive;font-size:1.7rem;color:var(--gold);display:block;}
+.hstat span{font-size:.73rem;color:#a3c4b0;}
+
+/* TICKER */
+.ticker{background:var(--g);color:white;font-family:'Fredoka One',cursive;font-size:.92rem;padding:.52rem 0;overflow:hidden;white-space:nowrap;border-top:2px solid var(--gold);border-bottom:2px solid var(--gold);}
+.ticker-i{display:inline-block;animation:tick 26s linear infinite;}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* QUICK LINKS */
+.qlinks{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.8rem;padding:1.6rem 5%;background:white;border-bottom:2px solid var(--g3);}
+.ql{display:flex;flex-direction:column;align-items:center;gap:.35rem;text-decoration:none;background:var(--light);border:2px solid var(--g3);border-radius:11px;padding:.9rem .6rem;font-weight:800;font-size:.75rem;color:var(--dark);text-align:center;box-shadow:3px 3px 0 var(--g3);transition:transform .15s,box-shadow .15s;cursor:pointer;}
+.ql:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--g2);color:var(--g);}
+.ql-i{font-size:1.5rem;}
+
+/* SECTIONS */
+.sec{padding:4rem 6%;}
+.sdark{background:var(--dark);color:white;}
+.sgreen{background:var(--g3);}
+.slbl{font-family:'Fredoka One',cursive;font-size:.8rem;color:var(--g2);letter-spacing:2px;text-transform:uppercase;margin-bottom:.4rem;}
+.sdark .slbl{color:var(--gold);}
+.stitle{font-family:'Fredoka One',cursive;font-size:clamp(1.6rem,3.5vw,2.4rem);line-height:1.2;margin-bottom:.8rem;}
+.sdark .stitle{color:white;}
+
+/* FEATURE GRID */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem;margin-top:2rem;}
+.fc{background:var(--light);border:2px solid var(--gold);border-radius:16px;padding:1.5rem;box-shadow:5px 5px 0 var(--gold);transition:transform .2s,box-shadow .2s;cursor:pointer;}
+.fc:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--gold);}
+.fc .fi{font-size:2rem;margin-bottom:.7rem;display:block;}
+.fc h3{font-family:'Fredoka One',cursive;font-size:1.15rem;margin-bottom:.4rem;}
+.fc p{font-size:.8rem;color:#555;line-height:1.6;}
+.ftag{display:inline-block;margin-top:.7rem;background:var(--gold);color:var(--dark);font-size:.68rem;font-weight:800;padding:.15rem .6rem;border-radius:18px;border:1.5px solid var(--dark);}
+
+/* TESTI */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.1rem;margin-top:2rem;}
+.tc{background:white;border:2px solid var(--g3);border-radius:15px;padding:1.4rem;box-shadow:4px 4px 0 var(--g3);transition:transform .15s;}
+.tc:hover{transform:translate(-2px,-2px);}
+.tc:nth-child(2){background:var(--g3);}
+.tc:nth-child(4){background:#fff9e6;}
+.stars{font-size:.9rem;margin-bottom:.65rem;}
+.tc p{font-size:.85rem;line-height:1.7;margin-bottom:.85rem;font-weight:600;}
+.ta{display:flex;align-items:center;gap:.6rem;}
+.av{width:34px;height:34px;border-radius:50%;border:2px solid var(--g);display:flex;align-items:center;justify-content:center;font-size:.95rem;background:white;}
+.ai strong{display:block;font-weight:800;font-size:.8rem;}
+.ai span{font-size:.7rem;color:var(--gray);}
+
+/* GPA */
+#pg-gpa{background:var(--light);}
+.wrap{max-width:680px;margin:0 auto;padding:2.5rem 5%;}
+.pghdr{background:var(--dark);border-radius:18px;padding:1.8rem;margin-bottom:1.8rem;text-align:center;}
+.pghdr h1{font-family:'Fredoka One',cursive;font-size:2rem;color:var(--gold);}
+.pghdr p{color:#a3c4b0;font-size:.85rem;margin-top:.35rem;}
+.gpa-res{background:var(--g3);border:3px solid var(--g);border-radius:14px;padding:1.3rem;text-align:center;margin-bottom:1.3rem;}
+.gpa-num{font-family:'Fredoka One',cursive;font-size:3.8rem;color:var(--g);display:block;line-height:1;}
+.gpa-cls{font-weight:800;font-size:1rem;margin-top:.3rem;}
+.gpa-u{font-size:.82rem;color:var(--gray);}
+.crow{display:grid;grid-template-columns:1fr 75px 105px 34px;gap:.55rem;align-items:center;margin-bottom:.55rem;}
+.crow input,.crow select{padding:.52rem .75rem;border:2px solid var(--g3);border-radius:9px;font-family:'Nunito',sans-serif;font-size:.85rem;background:white;outline:none;}
+.crow input:focus,.crow select:focus{border-color:var(--g);}
+.delbtn{background:var(--red);color:white;border:none;border-radius:7px;width:32px;height:32px;cursor:pointer;font-size:.9rem;}
+.addbtn{background:var(--g3);border:2px dashed var(--g);border-radius:9px;padding:.65rem;width:100%;font-family:'Nunito',sans-serif;font-weight:800;color:var(--g);cursor:pointer;font-size:.87rem;margin-bottom:.9rem;}
+.addbtn:hover{background:var(--g);color:white;}
+.calcbtn{background:var(--g);color:white;border:none;border-radius:28px;padding:.78rem 2rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;box-shadow:4px 4px 0 var(--dark);width:100%;}
+.calcbtn:hover{opacity:.92;}
+.ginfo{background:white;border:2px solid var(--g3);border-radius:12px;padding:1.1rem;margin-top:1.1rem;}
+.ginfo h4{font-weight:800;margin-bottom:.6rem;color:var(--g);}
+.gtable{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem;font-size:.75rem;text-align:center;}
+.gcell{background:var(--g3);border-radius:7px;padding:.35rem .15rem;}
+.gcell strong{display:block;font-weight:800;color:var(--g);}
+
+/* TIMETABLE */
+#pg-tt{background:var(--light);}
+.ttdays{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.1rem;}
+.tdbtn{background:white;border:2px solid var(--g3);border-radius:18px;padding:.35rem .9rem;font-family:'Nunito',sans-serif;font-weight:700;font-size:.8rem;cursor:pointer;transition:all .2s;}
+.tdbtn.on,.tdbtn:hover{background:var(--g);color:white;border-color:var(--g);}
+.ttslots{display:flex;flex-direction:column;gap:.65rem;max-width:580px;margin:0 auto;}
+.tslot{background:white;border:2px solid var(--g3);border-radius:12px;padding:.9rem 1.1rem;display:flex;align-items:center;gap:.9rem;box-shadow:3px 3px 0 var(--g3);}
+.tbadge{background:var(--g);color:white;border-radius:8px;padding:.25rem .65rem;font-size:.72rem;font-weight:800;white-space:nowrap;}
+.tsc h4{font-weight:800;font-size:.87rem;margin-bottom:.1rem;}
+.tsc span{font-size:.72rem;color:var(--gray);}
+.tslot.empty{border-style:dashed;border-color:#ccc;background:var(--light);}
+.ttadd{display:grid;grid-template-columns:1fr 110px 1fr auto;gap:.55rem;align-items:end;background:white;border:2px solid var(--g3);border-radius:12px;padding:.9rem;margin-top:.9rem;}
+.ttadd input{padding:.52rem .75rem;border:2px solid var(--g3);border-radius:9px;font-family:'Nunito',sans-serif;font-size:.82rem;outline:none;}
+.ttadd input:focus{border-color:var(--g);}
+.ttabtn{background:var(--g);color:white;border:none;border-radius:9px;padding:.57rem .9rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;}
+.addlbl{font-size:.72rem;font-weight:800;color:var(--gray);margin-bottom:.18rem;}
+
+/* POMODORO */
+#pg-pom{background:var(--dark);}
+.pomwrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 63px);padding:2.5rem 5%;text-align:center;}
+.pomtitle{font-family:'Fredoka One',cursive;font-size:1.9rem;color:var(--gold);margin-bottom:.35rem;}
+.pomsub{color:#a3c4b0;font-size:.87rem;margin-bottom:1.8rem;}
+.pommodes{display:flex;gap:.6rem;margin-bottom:1.8rem;flex-wrap:wrap;justify-content:center;}
+.pmb{background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.15);color:white;border-radius:18px;padding:.38rem 1rem;font-family:'Nunito',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;transition:all .2s;}
+.pmb.on{background:var(--g);border-color:var(--g);}
+.pomcircle{width:220px;height:220px;border-radius:50%;border:7px solid var(--g2);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto 1.8rem;}
+.pomtime{font-family:'Fredoka One',cursive;font-size:3.7rem;color:white;line-height:1;}
+.pomlbl{color:#a3c4b0;font-size:.82rem;margin-top:.25rem;}
+.pombtns{display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.3rem;}
+.pombt{background:var(--g);color:white;border:none;border-radius:28px;padding:.7rem 1.8rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:.92rem;cursor:pointer;box-shadow:4px 4px 0 rgba(0,0,0,.3);}
+.pombt:hover{opacity:.9;}
+.pombt.rst{background:rgba(255,255,255,.1);box-shadow:none;}
+.pomses{color:#a3c4b0;font-size:.85rem;}
+.pomses strong{color:var(--gold);}
+.pomtask{background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.15);border-radius:11px;padding:.62rem 1rem;font-family:'Nunito',sans-serif;font-size:.88rem;color:white;outline:none;width:290px;max-width:90vw;margin-bottom:1.4rem;text-align:center;}
+.pomtask::placeholder{color:rgba(255,255,255,.35);}
+.pomtip{background:rgba(255,255,255,.05);border-radius:12px;padding:.9rem 1.3rem;max-width:420px;margin-top:.9rem;}
+.pomtip p{color:#a3c4b0;font-size:.78rem;line-height:1.6;}
+
+/* FLASHCARDS */
+#pg-flash{background:var(--light);}
+.flashwrap{max-width:620px;margin:0 auto;padding:2.5rem 5%;}
+.ftabs{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.3rem;}
+.ftab{background:white;border:2px solid var(--g3);border-radius:18px;padding:.33rem .88rem;font-family:'Nunito',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;transition:all .2s;}
+.ftab.on,.ftab:hover{background:var(--g);color:white;border-color:var(--g);}
+.scene{perspective:800px;width:100%;margin-bottom:1.3rem;}
+.card3d{width:100%;min-height:210px;position:relative;transform-style:preserve-3d;transition:transform .5s;cursor:pointer;}
+.card3d.flip{transform:rotateY(180deg);}
+.cface{position:absolute;inset:0;backface-visibility:hidden;border-radius:18px;display:flex;align-items:center;justify-content:center;padding:1.8rem;text-align:center;border:3px solid var(--g);box-shadow:6px 6px 0 var(--g3);}
+.cfront{background:white;}
+.cback{background:var(--g3);transform:rotateY(180deg);}
+.cface .qlbl{font-family:'Fredoka One',cursive;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--g2);margin-bottom:.6rem;display:block;}
+.cface .qt{font-size:1.05rem;font-weight:700;line-height:1.5;color:var(--dark);}
+.cface .at{font-size:.97rem;font-weight:600;line-height:1.6;color:#0d4d22;}
+.cnav{display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.cnav button{background:var(--g);color:white;border:none;border-radius:10px;padding:.5rem 1.1rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;}
+.cnav button:disabled{background:var(--g3);color:var(--gray);cursor:not-allowed;}
+.ccount{font-weight:800;font-size:.88rem;color:var(--g);}
+.fliphint{font-size:.75rem;color:var(--gray);text-align:center;margin-top:.65rem;}
+
+/* CHAT */
+#pg-chat{background:var(--light);}
+.chatwrap{max-width:700px;margin:0 auto;padding:2.2rem 5%;}
+.chdr{background:var(--dark);border-radius:18px;padding:1.3rem 1.7rem;margin-bottom:1.3rem;display:flex;align-items:center;gap:.9rem;}
+.cav{width:48px;height:48px;border-radius:50%;background:var(--g);border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+.chdrinfo h2{font-family:'Fredoka One',cursive;font-size:1.3rem;color:var(--gold);}
+.chdrinfo p{color:#a3c4b0;font-size:.78rem;}
+.odot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;}
+.odot.off{background:#f59e0b;}
+.qq{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:.75rem;}
+.qqb{background:var(--g3);border:1.5px solid var(--g);border-radius:18px;padding:.28rem .75rem;font-size:.73rem;font-weight:700;color:var(--g);cursor:pointer;transition:all .15s;}
+.qqb:hover{background:var(--g);color:white;}
+.cbox{background:white;border:2px solid var(--g3);border-radius:14px;min-height:390px;max-height:390px;overflow-y:auto;padding:1.1rem;display:flex;flex-direction:column;gap:.75rem;margin-bottom:.9rem;}
+.msg{display:flex;flex-direction:column;max-width:82%;}
+.msg.u{align-self:flex-end;align-items:flex-end;}
+.msg.b{align-self:flex-start;align-items:flex-start;}
+.mbub{padding:.65rem .95rem;border-radius:14px;font-size:.85rem;line-height:1.6;}
+.msg.u .mbub{background:var(--g);color:white;border-bottom-right-radius:3px;}
+.msg.b .mbub{background:var(--g3);color:var(--dark);border-bottom-left-radius:3px;}
+.mtime{font-size:.64rem;color:var(--gray);margin-top:.2rem;}
+.typing{display:flex;gap:.28rem;padding:.45rem .75rem;background:var(--g3);border-radius:11px;width:fit-content;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--g2);animation:tdot 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes tdot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.cinrow{display:flex;gap:.55rem;}
+.cin{flex:1;padding:.65rem .95rem;border:2px solid var(--g3);border-radius:28px;font-family:'Nunito',sans-serif;font-size:.88rem;outline:none;}
+.cin:focus{border-color:var(--g);}
+.csend{background:var(--g);color:white;border:none;border-radius:28px;padding:.65rem 1.2rem;font-family:'Nunito',sans-serif;font-weight:800;cursor:pointer;font-size:.87rem;}
+.csend:hover{background:var(--g2);}
+.c4t{background:var(--g3);border:2px solid var(--g);border-radius:12px;padding:.9rem 1.1rem;margin-top:.9rem;display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;}
+.c4t-i{font-size:1.8rem;}
+.c4t-info h4{font-weight:800;font-size:.87rem;color:var(--g);}
+.c4t-info p{font-size:.75rem;color:var(--gray);margin-bottom:.4rem;}
+.wabtn{background:#25D366;color:white;border:none;border-radius:18px;padding:.38rem .95rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:.77rem;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem;}
+
+/* NEWS */
+#pg-news{background:var(--light);}
+.nhdr{background:var(--dark);padding:2.2rem 6%;color:white;}
+.nhdr h1{font-family:'Fredoka One',cursive;font-size:2rem;color:var(--gold);}
+.nhdr p{color:#a3c4b0;margin-top:.35rem;font-size:.85rem;}
+.nctrl{padding:1.1rem 5%;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;background:white;border-bottom:2px solid var(--g3);}
+.nfbtn{background:none;border:2px solid var(--g3);border-radius:18px;padding:.32rem .85rem;font-family:'Nunito',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;transition:all .2s;}
+.nfbtn.on,.nfbtn:hover{background:var(--g);color:white;border-color:var(--g);}
+.refbtn{margin-left:auto;background:var(--gold);color:var(--dark);border:none;border-radius:18px;padding:.32rem 1rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:.78rem;cursor:pointer;}
+.ngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.2rem;padding:1.8rem 5%;}
+.ncard{background:white;border:2px solid var(--g3);border-radius:13px;overflow:hidden;box-shadow:3px 3px 0 var(--g3);transition:transform .2s;cursor:pointer;}
+.ncard:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--g2);}
+.nbadge{background:var(--g);color:white;font-size:.68rem;font-weight:800;padding:.18rem .65rem;display:block;}
+.nbody{padding:1rem;}
+.nbody h3{font-weight:800;font-size:.88rem;line-height:1.45;margin-bottom:.45rem;}
+.nbody p{font-size:.78rem;color:var(--gray);line-height:1.55;}
+.nfoot{padding:.65rem 1rem;border-top:1px solid var(--g3);display:flex;justify-content:space-between;align-items:center;}
+.nfoot span{font-size:.7rem;color:var(--gray);}
+.nfoot a{font-size:.73rem;font-weight:800;color:var(--g2);text-decoration:none;}
+.live{background:var(--red);color:white;font-size:.65rem;font-weight:800;padding:.12rem .52rem;border-radius:18px;margin-left:.4rem;animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.nload{text-align:center;padding:2.5rem;color:var(--gray);}
+.spin{width:36px;height:36px;border:4px solid var(--g3);border-top-color:var(--g);border-radius:50%;animation:sp .8s linear infinite;margin:0 auto .9rem;}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* RESOURCES */
+#pg-res{background:var(--light);}
+.rhdr{background:var(--dark);padding:2.2rem 6%;color:white;}
+.rhdr h1{font-family:'Fredoka One',cursive;font-size:2rem;color:var(--gold);}
+.rhdr p{color:#a3c4b0;margin-top:.35rem;font-size:.85rem;}
+.stabs{display:flex;gap:.45rem;flex-wrap:wrap;padding:1.1rem 5%;background:white;border-bottom:2px solid var(--g3);}
+.stab{background:none;border:2px solid var(--g3);border-radius:18px;padding:.32rem .95rem;font-family:'Nunito',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;transition:all .2s;}
+.stab.on,.stab:hover{background:var(--g);color:white;border-color:var(--g);}
+.rescont{padding:1.8rem 5%;}
+.subtit{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--g);margin-bottom:.28rem;}
+.subdesc{font-size:.82rem;color:var(--gray);margin-bottom:1.2rem;}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.1rem;}
+.vc{background:white;border:2px solid var(--g3);border-radius:11px;overflow:hidden;box-shadow:3px 3px 0 var(--g3);transition:transform .2s;}
+.vc:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--g2);}
+.vt{position:relative;width:100%;padding-top:56.25%;background:var(--dark);}
+.vt iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+.vi{padding:.85rem;}
+.vi h4{font-weight:800;font-size:.85rem;line-height:1.4;margin-bottom:.25rem;}
+.vtag{display:inline-block;margin-top:.35rem;background:var(--g3);color:var(--g);font-size:.65rem;font-weight:800;padding:.1rem .52rem;border-radius:10px;}
+
+/* ABOUT */
+#pg-about{background:var(--light);}
+.abhdr{background:var(--dark);padding:3.5rem 6%;position:relative;overflow:hidden;}
+.abhdr h1{font-family:'Fredoka One',cursive;font-size:2.2rem;color:var(--gold);position:relative;z-index:1;}
+.abhdr p{color:#a3c4b0;max-width:520px;line-height:1.7;margin-top:.45rem;position:relative;z-index:1;font-size:.9rem;}
+.abgrid{display:grid;grid-template-columns:1fr 1fr;gap:2.8rem;align-items:start;margin-top:1.8rem;}
+.abt p{color:#a3c4b0;line-height:1.8;margin-bottom:.75rem;font-size:.92rem;}
+.sboxes{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.sbox{border:2px solid var(--gold);border-radius:14px;padding:1.1rem;text-align:center;font-weight:800;box-shadow:4px 4px 0 var(--gold);background:rgba(255,255,255,.05);}
+.sbox .big{font-family:'Fredoka One',cursive;font-size:1.9rem;display:block;color:var(--gold);}
+.sbox .lbl{font-size:.72rem;color:#a3c4b0;}
+.sbox.full{grid-column:1/-1;}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:2rem;}
+.ccard{background:white;border:2px solid var(--g3);border-radius:14px;padding:1.3rem;box-shadow:4px 4px 0 var(--g);transition:transform .2s;}
+.ccard:hover{transform:translate(-3px,-3px);}
+.ccard .ci{font-size:1.9rem;margin-bottom:.6rem;display:block;}
+.ccard h3{font-family:'Fredoka One',cursive;font-size:.97rem;margin-bottom:.3rem;color:var(--g);}
+.ccard p{font-size:.75rem;color:var(--gray);line-height:1.5;}
+.campus{display:inline-block;margin-top:.5rem;background:var(--g3);color:var(--g);font-size:.65rem;font-weight:800;padding:.15rem .6rem;border-radius:18px;}
+
+/* CONTACT */
+#pg-contact{background:var(--light);}
+.conhdr{background:var(--dark);padding:2.2rem 6%;color:white;}
+.conhdr h1{font-family:'Fredoka One',cursive;font-size:2rem;color:var(--gold);}
+.conhdr p{color:#a3c4b0;margin-top:.35rem;font-size:.85rem;}
+.congrid{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem;padding:2.2rem 5%;}
+.coni h2{font-family:'Fredoka One',cursive;font-size:1.6rem;margin-bottom:.65rem;color:var(--g);}
+.coni p{font-size:.88rem;color:#444;line-height:1.8;margin-bottom:1.2rem;}
+.chips{display:flex;flex-direction:column;gap:.65rem;}
+.chip{display:inline-flex;align-items:center;gap:.52rem;background:white;border:2px solid var(--g3);border-radius:28px;padding:.48rem 1rem;font-weight:700;font-size:.82rem;box-shadow:3px 3px 0 var(--g3);width:fit-content;}
+.cform{background:white;border:2px solid var(--g3);border-radius:16px;padding:1.7rem;box-shadow:5px 5px 0 var(--g);}
+.cform h3{font-family:'Fredoka One',cursive;font-size:1.25rem;margin-bottom:1.1rem;color:var(--g);}
+.fg{margin-bottom:.95rem;}
+.fg label{display:block;font-weight:800;margin-bottom:.28rem;font-size:.8rem;}
+.fg input,.fg textarea,.fg select{width:100%;padding:.62rem .88rem;border:2px solid var(--g3);border-radius:9px;font-family:'Nunito',sans-serif;font-size:.85rem;background:var(--light);outline:none;}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--g);}
+.fg textarea{resize:vertical;min-height:80px;}
+.frow2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.subbtn{width:100%;background:var(--g);color:white;border:none;border-radius:28px;padding:.78rem;font-family:'Nunito',sans-serif;font-weight:800;font-size:.92rem;cursor:pointer;box-shadow:4px 4px 0 var(--dark);}
+.subbtn:hover{opacity:.92;}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .5s,transform .5s;}
+.rv.vis{opacity:1;transform:translateY(0);}
+
+/* FOOTER */
+footer{background:var(--dark);padding:1.6rem 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem;border-top:3px solid var(--gold);}
+.flogo{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--gold);}
+.flogo span{color:white;}
+footer p{font-size:.75rem;color:var(--gray);}
+.flinks{display:flex;gap:.9rem;}
+.flinks a{color:var(--gray);text-decoration:none;font-size:.75rem;font-weight:700;cursor:pointer;}
+.flinks a:hover{color:var(--gold);}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.3rem;right:1.3rem;background:var(--g);color:white;font-weight:800;padding:.65rem 1.2rem;border-radius:28px;font-size:.82rem;z-index:8000;transform:translateY(70px);opacity:0;transition:transform .35s,opacity .35s;box-shadow:4px 4px 0 var(--dark);}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .abgrid,.congrid{grid-template-columns:1fr;gap:1.8rem;}
+  .nlinks{display:none;}
+  .hburg{display:flex;}
+  .nusr{display:none!important;}
+}
+@media(max-width:600px){
+  .hstats{gap:1.1rem;}
+  .frow2,.arow,.crow{grid-template-columns:1fr;}
+  .crow{grid-template-columns:1fr 70px 90px 32px;}
+  .ttadd{grid-template-columns:1fr;}
+  .sboxes{grid-template-columns:1fr;}
+  .sbox.full{grid-column:auto;}
+}
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="auth">
+  <div class="abox">
+    <div class="alogo">🐝 UNIOSUN <span>Study Hive</span></div>
+    <div class="atag">Built by 4TIMZ · 200L Building Technology · UNIOSUN</div>
+    <div class="atabs">
+      <button class="atab on" onclick="swAuth('login')">🔑 Sign In</button>
+      <button class="atab" onclick="swAuth('signup')">🎓 Sign Up</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="aform on" id="lform">
+      <div class="aerr" id="lerr"></div>
+      <div class="aok" id="lok"></div>
+      <div class="afg"><label>Email or Username</label><input id="lem" type="text" placeholder="you@uniosun.edu.ng or 'demo'"/></div>
+      <div class="afg">
+        <label>Password</label>
+        <div class="pwrap"><input id="lpw" type="password" placeholder="Your password"/><button class="peye" onclick="tpw('lpw',this)" type="button">👁️</button></div>
+        <span class="forgot" onclick="forgotpw()">Forgot password?</span>
+      </div>
+      <button class="abtn" onclick="doLogin()">🔑 Sign In</button>
+      <div class="adiv">or</div>
+      <button class="agoog" onclick="gLogin()">
+        <svg width="17" height="17" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15 16.1 19.2 13 24 13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 16.2 2 9.5 7.4 6.3 14.7z"/><path fill="#FBBC05" d="M24 46c5.8 0 10.8-1.9 14.7-5.2l-6.8-5.6C29.8 36.5 27 37.5 24 37.5c-6.1 0-11.3-4.1-13.1-9.7l-7 5.4C7.5 41.1 15.2 46 24 46z"/><path fill="#EA4335" d="M44.5 20H24v8.5h11.8c-.9 2.6-2.6 4.8-4.9 6.3l6.8 5.6C41.7 37.3 45 31.1 45 24c0-1.3-.2-2.7-.5-4z"/></svg>
+        Continue with Google
+      </button>
+      <div class="asmall">No account? <strong style="color:var(--g);cursor:pointer" onclick="swAuth('signup')">Sign up free →</strong></div>
+    </div>
+
+    <!-- SIGNUP -->
+    <div class="aform" id="sform">
+      <div class="aerr" id="serr"></div>
+      <div class="aok" id="sok"></div>
+      <div class="arow">
+        <div class="afg"><label>First Name</label><input id="sfn" type="text" placeholder="Emeka"/></div>
+        <div class="afg"><label>Last Name</label><input id="sln" type="text" placeholder="Okafor"/></div>
+      </div>
+      <div class="afg"><label>UNIOSUN Email</label><input id="sem" type="email" placeholder="you@uniosun.edu.ng"/></div>
+      <div class="afg"><label>College</label>
+        <select id="scol">
+          <option value="">— Select College —</option>
+          <option>CSET — Science, Engineering & Technology</option>
+          <option>Health Sciences</option><option>Law</option>
+          <option>Management & Social Sciences</option>
+          <option>Humanities & Culture</option><option>Education</option><option>Agriculture</option>
+        </select>
+      </div>
+      <div class="arow">
+        <div class="afg"><label>Level</label>
+          <select id="slvl"><option>100 Level</option><option>200 Level</option><option>300 Level</option><option>400 Level</option><option>500 Level</option></select>
+        </div>
+        <div class="afg"><label>Matric No. (optional)</label><input id="smat" placeholder="UNI/2025/001"/></div>
+      </div>
+      <div class="afg">
+        <label>Password</label>
+        <div class="pwrap"><input id="spw" type="password" placeholder="Min 6 chars" oninput="pwstr(this.value)"/><button class="peye" onclick="tpw('spw',this)" type="button">👁️</button></div>
+        <div class="pbar" id="pbar"></div>
+      </div>
+      <button class="abtn" onclick="doSignup()">🎓 Create Free Account</button>
+      <div class="adiv">or</div>
+      <button class="agoog" onclick="gLogin()">
+        <svg width="17" height="17" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15 16.1 19.2 13 24 13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 16.2 2 9.5 7.4 6.3 14.7z"/><path fill="#FBBC05" d="M24 46c5.8 0 10.8-1.9 14.7-5.2l-6.8-5.6C29.8 36.5 27 37.5 24 37.5c-6.1 0-11.3-4.1-13.1-9.7l-7 5.4C7.5 41.1 15.2 46 24 46z"/><path fill="#EA4335" d="M44.5 20H24v8.5h11.8c-.9 2.6-2.6 4.8-4.9 6.3l6.8 5.6C41.7 37.3 45 31.1 45 24c0-1.3-.2-2.7-.5-4z"/></svg>
+        Continue with Google
+      </button>
+      <div class="asmall">Have account? <strong style="color:var(--g);cursor:pointer" onclick="swAuth('login')">Sign in →</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE MENU -->
+<div class="mob" id="mob">
+  <button class="mobx" onclick="closeMob()">✕</button>
+  <button class="nl" onclick="go('home');closeMob()">🏠 Home</button>
+  <button class="nl" onclick="go('news');closeMob()">📰 News</button>
+  <button class="nl" onclick="go('res');closeMob()">📚 Study</button>
+  <button class="nl" onclick="go('gpa');closeMob()">🎓 GPA</button>
+  <button class="nl" onclick="go('tt');closeMob()">📅 Timetable</button>
+  <button class="nl" onclick="go('flash');closeMob()">🃏 Flashcards</button>
+  <button class="nl" onclick="go('pom');closeMob()">⏱️ Timer</button>
+  <button class="nl" onclick="go('chat');closeMob()">💬 Ask 4TIMZ</button>
+  <button class="nl" onclick="go('about');closeMob()">🏛️ UNIOSUN</button>
+  <button class="nl" onclick="go('contact');closeMob()">✉️ Join</button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nlogo" onclick="go('home')">🐝 UNIOSUN <span>Study Hive</span></div>
+  <div class="nlinks">
+    <button class="nl on" id="nl-home" onclick="go('home')">Home</button>
+    <button class="nl" id="nl-news" onclick="go('news')">📰 News</button>
+    <button class="nl" id="nl-res" onclick="go('res')">📚 Study</button>
+    <button class="nl" id="nl-gpa" onclick="go('gpa')">🎓 GPA</button>
+    <button class="nl" id="nl-tt" onclick="go('tt')">📅 Timetable</button>
+    <button class="nl" id="nl-flash" onclick="go('flash')">🃏 Cards</button>
+    <button class="nl" id="nl-pom" onclick="go('pom')">⏱️ Timer</button>
+    <button class="nl" id="nl-chat" onclick="go('chat')">💬 4TIMZ</button>
+    <button class="nl" id="nl-about" onclick="go('about')">🏛️ UNIOSUN</button>
+    <button class="nl cta" id="nl-contact" onclick="go('contact')">Join</button>
+  </div>
+  <div style="position:relative;">
+    <div class="nusr" id="nusr" onclick="tdrop()">
+      <div class="nav-av" id="nav-av">?</div>
+      <span class="nav-nm" id="nav-nm">Student</span>
+      <span style="color:var(--gold);font-size:.65rem;">▾</span>
+    </div>
+    <div class="ndrop" id="ndrop">
+      <div class="ditem" onclick="go('gpa');tdrop()">🎓 My GPA</div>
+      <div class="ditem" onclick="go('tt');tdrop()">📅 Timetable</div>
+      <div class="ditem" onclick="go('chat');tdrop()">💬 Ask 4TIMZ</div>
+      <div class="ddiv"></div>
+      <div class="ditem red" onclick="logout()">🚪 Sign Out</div>
+    </div>
+  </div>
+  <div class="hburg" onclick="openMob()"><div></div><div></div><div></div></div>
+</nav>
+
+<!-- HOME -->
+<div class="pg on" id="pg-home">
+  <div class="hero">
+    <div class="hbg"><div class="hc hc1"></div><div class="hc hc2"></div><div class="hc hc3"></div></div>
+    <div class="hcont">
+      <div class="hbadge">✨ #1 UNIOSUN Student Platform</div>
+      <h1>Learn Smarter,<br><span class="hl">Not Harder</span> 🚀</h1>
+      <p class="byline" id="byline">🛠️ Built & owned by 4TIMZ — 200L Building Technology, UNIOSUN</p>
+      <p class="hsub">Live UNIOSUN news, free study videos, GPA calculator, timetable, flashcards, Pomodoro timer & direct chat with 4TIMZ — all free, all in one place.</p>
+      <div class="hbtns">
+        <button class="btn bgold" onclick="go('chat')">💬 Ask 4TIMZ</button>
+        <button class="btn bout" onclick="go('res')">📺 Study Videos</button>
+      </div>
+      <div class="hstats">
+        <div class="hstat"><strong>2K+</strong><span>Students</span></div>
+        <div class="hstat"><strong>98%</strong><span>Pass Rate</span></div>
+        <div class="hstat"><strong>8</strong><span>Free Tools</span></div>
+        <div class="hstat"><strong>Free</strong><span>Always</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ticker"><div class="ticker-i">🐝 UNIOSUN Study Hive &nbsp;✦&nbsp; OSUN STATE UNIVERSITY &nbsp;✦&nbsp; RANKED #62 NIGERIA &nbsp;✦&nbsp; 7 COLLEGES · 6 CAMPUSES &nbsp;✦&nbsp; FREE GPA CALC &nbsp;✦&nbsp; STUDY TIMER &nbsp;✦&nbsp; LIVE NEWS &nbsp;✦&nbsp; ASK 4TIMZ ANYTHING &nbsp;✦&nbsp; 200L BUILDING TECH &nbsp;✦&nbsp; 🐝 UNIOSUN Study Hive &nbsp;✦&nbsp; OSUN STATE UNIVERSITY &nbsp;✦&nbsp; RANKED #62 NIGERIA &nbsp;✦&nbsp; 7 COLLEGES · 6 CAMPUSES &nbsp;✦&nbsp; FREE GPA CALC &nbsp;✦&nbsp; STUDY TIMER &nbsp;✦&nbsp; LIVE NEWS &nbsp;✦&nbsp; ASK 4TIMZ ANYTHING &nbsp;✦&nbsp; 200L BUILDING TECH &nbsp;✦&nbsp;</div></div>
+
+  <div class="qlinks">
+    <a class="ql" href="https://portal.uniosun.edu.ng" target="_blank"><span class="ql-i">🖥️</span>Portal</a>
+    <a class="ql" href="https://admissions.uniosun.edu.ng" target="_blank"><span class="ql-i">📋</span>Admissions</a>
+    <button class="ql" onclick="go('gpa')"><span class="ql-i">🎓</span>GPA Calc</button>
+    <button class="ql" onclick="go('tt')"><span class="ql-i">📅</span>Timetable</button>
+    <button class="ql" onclick="go('flash')"><span class="ql-i">🃏</span>Flashcards</button>
+    <button class="ql" onclick="go('pom')"><span class="ql-i">⏱️</span>Study Timer</button>
+    <button class="ql" onclick="go('news')"><span class="ql-i">📰</span>UNIOSUN News</button>
+    <button class="ql" onclick="go('chat')"><span class="ql-i">💬</span>Ask 4TIMZ</button>
+  </div>
+
+  <div class="sec sdark">
+    <p class="slbl rv">Special Features</p>
+    <h2 class="stitle rv">Everything a 100L UNIOSUN student needs 🔥</h2>
+    <div class="fgrid">
+      <div class="fc rv" onclick="go('gpa')"><span class="fi">🎓</span><h3>GPA Calculator</h3><p>Calculate your CGPA using UNIOSUN's 5-point grading system instantly.</p><span class="ftag">Must Use</span></div>
+      <div class="fc rv" onclick="go('tt')"><span class="fi">📅</span><h3>Timetable Builder</h3><p>Build your full weekly lecture schedule with venues and times.</p><span class="ftag">Stay Organized</span></div>
+      <div class="fc rv" onclick="go('flash')"><span class="fi">🃏</span><h3>GST Flashcards</h3><p>Flip cards for GST 101, 102, 103, Philosophy, Science History & Maths.</p><span class="ftag">Study Smarter</span></div>
+      <div class="fc rv" onclick="go('pom')"><span class="fi">⏱️</span><h3>Pomodoro Timer</h3><p>25-min focus sessions with breaks. Beat procrastination the smart way.</p><span class="ftag">Beat Distraction</span></div>
+      <div class="fc rv" onclick="go('news')"><span class="fi">📰</span><h3>Live UNIOSUN News</h3><p>Latest scholarships, results, announcements — UNIOSUN students only.</p><span class="ftag" style="background:var(--red);color:white;border-color:var(--red);">● LIVE</span></div>
+      <div class="fc rv" onclick="go('res')"><span class="fi">📺</span><h3>Study Videos</h3><p>YouTube tutorials for all 100L GST courses + Maths, Physics, Chemistry.</p><span class="ftag">Free Forever</span></div>
+      <div class="fc rv" onclick="go('chat')"><span class="fi">💬</span><h3>Ask 4TIMZ</h3><p>Message 4TIMZ directly. AI covers questions when 4TIMZ is offline.</p><span class="ftag">24/7 AI Help</span></div>
+      <div class="fc rv" onclick="go('about')"><span class="fi">🏛️</span><h3>All About UNIOSUN</h3><p>7 colleges, 6 campuses, portals, scholarships & everything a fresher needs.</p><span class="ftag">100L Must Read</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <p class="slbl rv">Students Say</p>
+    <h2 class="stitle rv">Real UNIOSUN students, real results 🏆</h2>
+    <div class="tgrid">
+      <div class="tc rv"><div class="stars">⭐⭐⭐⭐⭐</div><p>"Was about to carry over Thermodynamics. The study timer and videos saved me. Ended up with B+!!"</p><div class="ta"><div class="av">👦🏾</div><div class="ai"><strong>Emeka O.</strong><span>Engineering, CSET UNIOSUN</span></div></div></div>
+      <div class="tc rv"><div class="stars">⭐⭐⭐⭐⭐</div><p>"The GPA calculator is everything!! I use it every semester. Flashcards for GST 107 saved my life fr 😭"</p><div class="ta"><div class="av">👧🏽</div><div class="ai"><strong>Aisha M.</strong><span>Health Sciences, UNIOSUN</span></div></div></div>
+      <div class="tc rv"><div class="stars">⭐⭐⭐⭐⭐</div><p>"4TIMZ replied me at 11pm when I was confused about registration. This guy is actually goated lol 🙌"</p><div class="ta"><div class="av">👦🏿</div><div class="ai"><strong>Tunde A.</strong><span>Law College, UNIOSUN</span></div></div></div>
+      <div class="tc rv"><div class="stars">⭐⭐⭐⭐⭐</div><p>"This website taught me about UNIOSUN better than orientation did 😭 Every 100L student needs this!"</p><div class="ta"><div class="av">👧🏾</div><div class="ai"><strong>Chioma N.</strong><span>CMSS, UNIOSUN</span></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- GPA PAGE -->
+<div class="pg" id="pg-gpa">
+  <div class="wrap">
+    <div class="pghdr"><h1>🎓 CGPA Calculator</h1><p>UNIOSUN 5-point grading system · Add all courses & calculate instantly</p></div>
+    <div class="gpa-res"><span class="gpa-num" id="gnum">—</span><div class="gpa-cls" id="gcls">Add your courses below 👇</div><div class="gpa-u" id="gu"></div></div>
+    <div id="crows"></div>
+    <button class="addbtn" onclick="addRow()">+ Add Course</button>
+    <button class="calcbtn" onclick="calcGPA()">🎓 Calculate My CGPA</button>
+    <div class="ginfo"><h4>📊 UNIOSUN Grading System</h4>
+      <div class="gtable">
+        <div class="gcell"><strong>A</strong>70-100%<br>5 pts</div>
+        <div class="gcell"><strong>B</strong>60-69%<br>4 pts</div>
+        <div class="gcell"><strong>C</strong>50-59%<br>3 pts</div>
+        <div class="gcell"><strong>D</strong>45-49%<br>2 pts</div>
+        <div class="gcell"><strong>F</strong>0-44%<br>0 pts</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TIMETABLE PAGE -->
+<div class="pg" id="pg-tt">
+  <div class="wrap">
+    <div class="pghdr"><h1>📅 My UNIOSUN Timetable</h1><p>Build your weekly lecture schedule · Add courses per day</p></div>
+    <div class="ttdays" id="ttdays"></div>
+    <div class="ttslots" id="ttslots"></div>
+    <div class="ttadd">
+      <div><div class="addlbl">Course</div><input id="ttc" placeholder="e.g. GST 101 — Use of English"/></div>
+      <div><div class="addlbl">Time</div><input id="ttt" placeholder="e.g. 8:00 AM"/></div>
+      <div><div class="addlbl">Venue</div><input id="ttv" placeholder="e.g. LT1 Osogbo"/></div>
+      <button class="ttabtn" onclick="addSlot()">Add +</button>
+    </div>
+  </div>
+</div>
+
+<!-- POMODORO PAGE -->
+<div class="pg" id="pg-pom">
+  <div class="pomwrap">
+    <div class="pomtitle">⏱️ Pomodoro Study Timer</div>
+    <p class="pomsub">Focus 25 mins · Short break 5 mins · Long break 15 mins</p>
+    <input class="pomtask" id="ptask" placeholder="What are you studying? e.g. GST 101 essay..."/>
+    <div class="pommodes">
+      <button class="pmb on" onclick="setMode('focus',this)">🧠 Focus (25 min)</button>
+      <button class="pmb" onclick="setMode('short',this)">☕ Short Break (5 min)</button>
+      <button class="pmb" onclick="setMode('long',this)">🛌 Long Break (15 min)</button>
+    </div>
+    <div class="pomcircle">
+      <span class="pomtime" id="ptime">25:00</span>
+      <span class="pomlbl" id="plbl">Ready to focus? 💪</span>
+    </div>
+    <div class="pombtns">
+      <button class="pombt" id="pstart" onclick="togglePom()">▶ Start</button>
+      <button class="pombt rst" onclick="resetPom()">↺ Reset</button>
+    </div>
+    <div class="pomses">Sessions today: <strong id="pses">0</strong> 🍅</div>
+    <div class="pomtip"><p>💡 <strong style="color:white">Pro tip:</strong> Put phone face down, close WhatsApp & TikTok. Commit to just 25 minutes. You'll be shocked how much you get done!</p></div>
+  </div>
+</div>
+
+<!-- FLASHCARDS PAGE -->
+<div class="pg" id="pg-flash">
+  <div class="flashwrap">
+    <div class="pghdr"><h1>🃏 GST Flashcards</h1><p>Tap card to flip · Master your 100L courses</p></div>
+    <div class="ftabs" id="ftabs"></div>
+    <div class="scene"><div class="card3d" id="c3d" onclick="flipCard()">
+      <div class="cface cfront"><div><span class="qlbl">Question</span><div class="qt" id="cq">Loading...</div></div></div>
+      <div class="cface cback"><div><span class="qlbl" style="color:#0d4d22">Answer</span><div class="at" id="ca">Loading...</div></div></div>
+    </div></div>
+    <p class="fliphint">👆 Tap card to flip · Use arrows to navigate</p>
+    <div class="cnav">
+      <button onclick="prevC()" id="prev" disabled>← Prev</button>
+      <span class="ccount" id="cct">1 / 8</span>
+      <button onclick="nextC()" id="nxt">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT PAGE -->
+<div class="pg" id="pg-chat">
+  <div class="chatwrap">
+    <div class="chdr">
+      <div class="cav">🐝</div>
+      <div class="chdrinfo">
+        <h2>Ask 4TIMZ</h2>
+        <p><span class="odot off"></span>4TIMZ is offline · AI is answering for them now</p>
+      </div>
+    </div>
+    <div class="qq">
+      <button class="qqb" onclick="qsend('How do I register courses on UNIOSUN portal?')">📋 Course Registration</button>
+      <button class="qqb" onclick="qsend('What is the UNIOSUN acceptance fee?')">💰 Acceptance Fee</button>
+      <button class="qqb" onclick="qsend('When do 100L lectures start at UNIOSUN?')">📅 Lecture Start</button>
+      <button class="qqb" onclick="qsend('How do I calculate my GPA?')">🎓 GPA Help</button>
+      <button class="qqb" onclick="qsend('What scholarships are available at UNIOSUN?')">🏅 Scholarships</button>
+      <button class="qqb" onclick="qsend('Which college should I choose at UNIOSUN?')">🏛️ College Guide</button>
+    </div>
+    <div class="cbox" id="cbox"></div>
+    <div class="cinrow">
+      <input class="cin" id="cin" placeholder="Type your question..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+      <button class="csend" onclick="sendMsg()">Send →</button>
+    </div>
+    <div class="c4t">
+      <span class="c4t-i">👤</span>
+      <div class="c4t-info">
+        <h4>📲 Reach 4TIMZ Directly</h4>
+        <p>200L Building Technology, UNIOSUN. Replies personally when online. For urgent stuff, WhatsApp directly.</p>
+        <button class="wabtn" onclick="window.open('https://wa.me/2349065557780?text=Hi 4TIMZ, I found your UNIOSUN Study Hive website and I have a question...','_blank')">📱 WhatsApp 4TIMZ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NEWS PAGE -->
+<div class="pg" id="pg-news">
+  <div class="nhdr"><h1>📰 UNIOSUN News <span class="live">● LIVE</span></h1><p>Latest news from Osun State University · UNIOSUN students only</p></div>
+  <div class="nctrl">
+    <button class="nfbtn on" onclick="fnews('all',this)">All</button>
+    <button class="nfbtn" onclick="fnews('scholarships',this)">🏅 Scholarships</button>
+    <button class="nfbtn" onclick="fnews('admissions',this)">📋 Admissions</button>
+    <button class="nfbtn" onclick="fnews('achievements',this)">🏆 Achievements</button>
+    <button class="nfbtn" onclick="fnews('academic',this)">📚 Academic</button>
+    <button class="refbtn" onclick="rfnews()">🔄 Refresh</button>
+  </div>
+  <div id="ngrid" class="ngrid"><div class="nload"><div class="spin"></div><p>Loading UNIOSUN news...</p></div></div>
+</div>
+
+<!-- RESOURCES PAGE -->
+<div class="pg" id="pg-res">
+  <div class="rhdr"><h1>📚 100L Study Resources</h1><p>Free YouTube videos for all UNIOSUN 100-Level GST & core courses · Curated by 4TIMZ</p></div>
+  <div class="stabs" id="stabs"></div>
+  <div class="rescont" id="rescont"></div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div class="pg" id="pg-about">
+  <div class="abhdr sdark">
+    <p class="slbl">About UNIOSUN</p>
+    <h1>Osun State University — Centre of Excellence 🎓</h1>
+    <p>Everything a 100L fresher needs to know — history, colleges, portals, scholarships & contacts.</p>
+    <div class="abgrid">
+      <div class="abt">
+        <p>Osun State University (UNIOSUN) was established in <strong style="color:var(--gold)">2006</strong>, approved by NUC on 21 December 2006 as Nigeria's 30th state university and 80th in the national system.</p>
+        <p>It operates a collegiate system across <strong style="color:var(--gold)">6 campuses</strong> in 6 geopolitical zones of Osun State: Osogbo (main), Ikire, Okuku, Ifetedo, Ipetu-Ijesa and Ejigbo.</p>
+        <p><strong style="color:var(--gold)">VC:</strong> Prof. Odunayo Clement Adebooye &nbsp;|&nbsp; <strong style="color:var(--gold)">Pro-Chancellor:</strong> Prof. Wale Oladipo</p>
+        <p style="margin-top:.7rem;background:rgba(245,197,24,.1);border:1px solid var(--gold);border-radius:9px;padding:.75rem;font-size:.82rem;">🏅 <strong style="color:var(--gold)">WAPCo Scholarship 2025/26:</strong> 7 students × ₦878,040 each. Applications open annually!</p>
+      </div>
+      <div class="sboxes">
+        <div class="sbox"><span class="big">2006</span><span class="lbl">Founded</span></div>
+        <div class="sbox"><span class="big">7</span><span class="lbl">Colleges</span></div>
+        <div class="sbox"><span class="big">6</span><span class="lbl">Campuses</span></div>
+        <div class="sbox"><span class="big">#62</span><span class="lbl">National Rank</span></div>
+        <div class="sbox full"><span class="big">11,385+</span><span class="lbl">Students (2025/26)</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sec">
+    <p class="slbl rv">Colleges</p><h2 class="stitle rv">7 Colleges · 6 Campuses 🏛️</h2>
+    <div class="cgrid">
+      <div class="ccard rv"><span class="ci">⚗️</span><h3>Science, Engineering & Tech</h3><p>Engineering, CS, Building Tech, Chemistry, Physics, Maths.</p><span class="campus">📍 Osogbo</span></div>
+      <div class="ccard rv"><span class="ci">🏥</span><h3>Health Sciences</h3><p>Medicine, Nursing, Public Health, Medical Lab, Pharmacy.</p><span class="campus">📍 Osogbo</span></div>
+      <div class="ccard rv"><span class="ci">⚖️</span><h3>Law</h3><p>LLB Law, Common & Islamic Law, Criminology, Peace Studies.</p><span class="campus">📍 Ifetedo</span></div>
+      <div class="ccard rv"><span class="ci">📊</span><h3>Management & Social Sciences</h3><p>Accounting, Economics, Business Admin, Sociology, Psychology.</p><span class="campus">📍 Okuku</span></div>
+      <div class="ccard rv"><span class="ci">🎭</span><h3>Humanities & Culture</h3><p>English, History, Languages, Philosophy, Theatre Arts, Fine Arts.</p><span class="campus">📍 Ikire</span></div>
+      <div class="ccard rv"><span class="ci">👩‍🏫</span><h3>Education</h3><p>Education degrees across all subjects — producing quality teachers.</p><span class="campus">📍 Ipetu-Ijesa</span></div>
+      <div class="ccard rv"><span class="ci">🌾</span><h3>Agriculture</h3><p>Agronomy, Animal Science, Fisheries, Forestry, Agric Economics.</p><span class="campus">📍 Ejigbo</span></div>
+    </div>
+  </div>
+  <div class="sec sgreen">
+    <p class="slbl rv">Key Contacts</p><h2 class="stitle rv">Important Portals & Contacts 📞</h2>
+    <div class="fgrid" style="margin-top:1.5rem;">
+      <a class="fc rv" href="https://portal.uniosun.edu.ng" target="_blank" style="text-decoration:none;color:inherit"><span class="fi">🖥️</span><h3>Student Portal</h3><p>Register courses, check results, pay fees via Remita.</p><span class="ftag" style="background:var(--g);color:white;">Visit →</span></a>
+      <a class="fc rv" href="https://admissions.uniosun.edu.ng" target="_blank" style="text-decoration:none;color:inherit"><span class="fi">📋</span><h3>Admissions Portal</h3><p>Check admission status, pay ₦50,000 acceptance fee.</p><span class="ftag" style="background:var(--g);color:white;">Visit →</span></a>
+      <a class="fc rv" href="https://postgraduate.uniosun.edu.ng" target="_blank" style="text-decoration:none;color:inherit"><span class="fi">🎓</span><h3>Postgraduate</h3><p>Masters & PhD programmes. Application ₦20,000 via Remita.</p><span class="ftag" style="background:var(--g);color:white;">Visit →</span></a>
+      <div class="fc rv"><span class="fi">📞</span><h3>Admissions Office</h3><p>Room 228, Admin Building, Osogbo.<br>📱 08107976419 (Mon–Fri 9–4)<br>💬 WhatsApp: 09119994001</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT PAGE -->
+<div class="pg" id="pg-contact">
+  <div class="conhdr"><h1>✉️ Join UNIOSUN Study Hive</h1><p>Sign up today — first week free. No credit card needed.</p></div>
+  <div class="congrid">
+    <div class="coni">
+      <h2>Ready to join the hive? 🐝</h2>
+      <p>Sign up as a UNIOSUN student and unlock tutoring, study groups, past questions & all 8 tools — free to start.</p>
+      <div class="chips">
+        <div class="chip">📧 hello@uniosunstudyhive.edu.ng</div>
+        <div class="chip">📱 09065557780 (4TIMZ)</div>
+        <div class="chip">📍 Osogbo, Osun State — UNIOSUN</div>
+        <div class="chip">🕒 Mon–Sat, 8am – 10pm WAT</div>
+        <div class="chip">🛠️ Built by 4TIMZ, 200L Building</div>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--g3);border:2px solid var(--g);border-radius:12px;padding:1rem;">
+        <h4 style="font-weight:800;color:var(--g);margin-bottom:.5rem;">🏅 UNIOSUN Scholarships 2025/26</h4>
+        <ul style="font-size:.8rem;line-height:1.9;padding-left:1.1rem;color:#333;">
+          <li>WAPCo Annual Scholarship — ₦878,040 each (7 students)</li>
+          <li>Osun Development Forum Texas — ₦100,000</li>
+          <li>NELFUND Federal Student Loan</li>
+          <li>Ajara Humanitarian Foundation (Computing)</li>
+          <li>UNIOSUN Staff Volunteer Group</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cform">
+      <h3>Start Learning Today 🚀</h3>
+      <div class="frow2">
+        <div class="fg"><label>First Name</label><input type="text" placeholder="Emeka"/></div>
+        <div class="fg"><label>Last Name</label><input type="text" placeholder="Okafor"/></div>
+      </div>
+      <div class="fg"><label>UNIOSUN Email</label><input type="email" placeholder="you@uniosun.edu.ng"/></div>
+      <div class="fg"><label>College</label>
+        <select><option>— Select College —</option><option>CSET (Osogbo)</option><option>Health Sciences (Osogbo)</option><option>Law (Ifetedo)</option><option>Mgt & Social Sciences (Okuku)</option><option>Humanities & Culture (Ikire)</option><option>Education (Ipetu-Ijesa)</option><option>Agriculture (Ejigbo)</option></select>
+      </div>
+      <div class="fg"><label>Level</label>
+        <select><option>100 Level</option><option>200 Level</option><option>300 Level</option><option>400 Level</option><option>500 Level</option></select>
+      </div>
+      <div class="fg"><label>How can we help you?</label><textarea placeholder="e.g. I'm a new 100L student and need help with registration, GST courses and finding a study group..."></textarea></div>
+      <button class="subbtn" onclick="toast('🎉 Welcome! Check your email.')">🎓 Join Free!</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="flogo">🐝 UNIOSUN <span>Study Hive</span></div>
+  <p>© 2025 UNIOSUN Study Hive · Built with 💚 by <strong>4TIMZ</strong>, 200L Building Tech, UNIOSUN</p>
+  <div class="flinks"><a href="https://www.uniosun.edu.ng" target="_blank">Official UNIOSUN</a><a onclick="go('news')">News</a><a onclick="go('chat')">Ask 4TIMZ</a></div>
+</footer>
+<div class="toast" id="toastEl"></div>
+
+<script>
+// ===== AUTH =====
+const USERS=JSON.parse(sessionStorage.getItem('ush')||'{}');
+let CU=null;
+function swAuth(t){
+  document.querySelectorAll('.atab').forEach((b,i)=>b.classList.toggle('on',(i===0&&t==='login')||(i===1&&t==='signup')));
+  document.getElementById('lform').classList.toggle('on',t==='login');
+  document.getElementById('sform').classList.toggle('on',t==='signup');
+  ['lerr','lok','serr','sok'].forEach(id=>{const e=document.getElementById(id);e.classList.remove('on');e.textContent='';});
+}
+function tpw(id,btn){const i=document.getElementById(id);i.type=i.type==='password'?'text':'password';btn.textContent=i.type==='password'?'👁️':'🙈';}
+function pwstr(v){const b=document.getElementById('pbar');if(!v){b.style.width='0';return;}let s=0;if(v.length>=6)s++;if(v.length>=10)s++;if(/[A-Z]/.test(v))s++;if(/[0-9]/.test(v))s++;const c=['#ef4444','#f97316','#eab308','#22c55e','#16a34a'];b.style.width=(s*20)+'%';b.style.background=c[s-1]||'#ef4444';}
+function forgotpw(){const e=document.getElementById('lok');e.textContent='📧 Password help: WhatsApp 4TIMZ on 09065557780';e.classList.add('on');}
+function doSignup(){
+  const fn=document.getElementById('sfn').value.trim(),ln=document.getElementById('sln').value.trim(),em=document.getElementById('sem').value.trim().toLowerCase(),col=document.getElementById('scol').value,lvl=document.getElementById('slvl').value,pw=document.getElementById('spw').value;
+  const err=document.getElementById('serr'),ok=document.getElementById('sok');
+  err.classList.remove('on');ok.classList.remove('on');
+  if(!fn||!ln){err.textContent='⚠️ Enter your first and last name.';err.classList.add('on');return;}
+  if(!em){err.textContent='⚠️ Enter your email.';err.classList.add('on');return;}
+  if(!col){err.textContent='⚠️ Select your college.';err.classList.add('on');return;}
+  if(pw.length<6){err.textContent='⚠️ Password must be at least 6 characters.';err.classList.add('on');return;}
+  if(USERS[em]){err.textContent='⚠️ Email already registered. Sign in instead!';err.classList.add('on');return;}
+  USERS[em]={fn,ln,em,col,lvl,pw,joined:new Date().toLocaleDateString()};
+  sessionStorage.setItem('ush',JSON.stringify(USERS));
+  ok.textContent=`🎉 Account created! Welcome, ${fn}!`;ok.classList.add('on');
+  setTimeout(()=>loginUser(USERS[em]),1200);
+}
+function doLogin(){
+  const raw=document.getElementById('lem').value.trim().toLowerCase(),pw=document.getElementById('lpw').value;
+  const err=document.getElementById('lerr'),ok=document.getElementById('lok');
+  err.classList.remove('on');ok.classList.remove('on');
+  if(!raw||!pw){err.textContent='⚠️ Enter email and password.';err.classList.add('on');return;}
+  if((raw==='demo'||raw==='demo@uniosun.edu.ng')&&pw==='demo123'){loginUser({fn:'Demo',ln:'Student',em:'demo@uniosun.edu.ng',col:'CSET',lvl:'100 Level'});return;}
+  const u=USERS[raw];
+  if(!u){err.textContent='⚠️ No account found. Sign up first!';err.classList.add('on');return;}
+  if(u.pw!==pw){err.textContent='⚠️ Wrong password. Try again.';err.classList.add('on');return;}
+  loginUser(u);
+}
+function gLogin(){const u={fn:'Google',ln:'User',em:'google@uniosun.edu.ng',col:'CSET',lvl:'100 Level'};const ok=document.getElementById('lok');ok.textContent='✅ Signed in with Google!';ok.classList.add('on');setTimeout(()=>loginUser(u),800);}
+function loginUser(u){
+  CU=u;
+  document.getElementById('auth').classList.add('gone');
+  document.getElementById('nav-av').textContent=u.fn[0].toUpperCase();
+  document.getElementById('nav-nm').textContent=u.fn;
+  document.getElementById('nusr').classList.add('show');
+  document.getElementById('byline').innerHTML=`🛠️ Built by 4TIMZ · 200L Building Tech · UNIOSUN &nbsp;<span style="background:var(--g3);color:var(--g);font-size:.65rem;font-weight:800;padding:.1rem .5rem;border-radius:16px;">Signed in as ${u.fn} · ${u.lvl||'Student'}</span>`;
+  toast(`👋 Welcome, ${u.fn}! Ready to study? 🐝`);
+  sessionStorage.setItem('scu',JSON.stringify(u));
+}
+function logout(){CU=null;document.getElementById('auth').classList.remove('gone');document.getElementById('nusr').classList.remove('show');document.getElementById('ndrop').classList.remove('open');sessionStorage.removeItem('scu');swAuth('login');toast('👋 Signed out!');}
+function tdrop(){document.getElementById('ndrop').classList.toggle('open');}
+document.addEventListener('click',e=>{const d=document.getElementById('ndrop'),u=document.getElementById('nusr');if(d&&!d.contains(e.target)&&!u.contains(e.target))d.classList.remove('open');});
+(function(){const s=sessionStorage.getItem('scu');if(s){try{loginUser(JSON.parse(s));}catch(e){}}})();
+
+// ===== NAV =====
+function go(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  document.querySelectorAll('.nl').forEach(n=>n.classList.remove('on'));
+  const b=document.getElementById('nl-'+id);if(b)b.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='news'&&!nLoaded)loadNews();
+  if(id==='res'&&!rLoaded)buildRes();
+  if(id==='gpa'&&!gLoaded)initGPA();
+  if(id==='tt'&&!tLoaded)initTT();
+  if(id==='flash'&&!fLoaded)initFlash();
+  if(id==='chat'&&!cLoaded)initChat();
+}
+function openMob(){document.getElementById('mob').classList.add('open');}
+function closeMob(){document.getElementById('mob').classList.remove('open');}
+
+// ===== TOAST =====
+function toast(m){const t=document.getElementById('toastEl');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
+
+// ===== REVEAL =====
+const ro=new IntersectionObserver(en=>{en.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('vis'),i*65);});},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+// ===== GPA =====
+let gLoaded=false,rowCt=0;
+function initGPA(){gLoaded=true;document.getElementById('crows').innerHTML='';for(let i=0;i<5;i++)addRow();}
+function addRow(){rowCt++;const d=document.createElement('div');d.className='crow';d.id='r'+rowCt;d.innerHTML=`<input placeholder="Course e.g. GST 101" id="cn${rowCt}"/><select id="cu${rowCt}">${[1,2,3,4,6].map(u=>`<option value="${u}">${u}u</option>`).join('')}</select><select id="cg${rowCt}"><option value="5">A (70+)</option><option value="4">B (60-69)</option><option value="3">C (50-59)</option><option value="2">D (45-49)</option><option value="0">F (0-44)</option></select><button class="delbtn" onclick="this.parentElement.remove()">✕</button>`;document.getElementById('crows').appendChild(d);}
+function calcGPA(){
+  let tp=0,tu=0;
+  document.querySelectorAll('.crow').forEach(r=>{const id=r.id.slice(1);const u=parseFloat(document.getElementById('cu'+id)?.value||0);const g=parseFloat(document.getElementById('cg'+id)?.value||0);tp+=u*g;tu+=u;});
+  if(!tu){toast('⚠️ Add your courses first!');return;}
+  const gpa=(tp/tu).toFixed(2);
+  document.getElementById('gnum').textContent=gpa;
+  let cls='',col='';
+  if(gpa>=4.5){cls='First Class Honours 🏆';col='#22c55e';}
+  else if(gpa>=3.5){cls='Second Class Upper (2:1) 🎉';col='#3b82f6';}
+  else if(gpa>=2.5){cls='Second Class Lower (2:2) 👍';col='#f59e0b';}
+  else if(gpa>=1.5){cls='Third Class 😐';col='#f97316';}
+  else{cls='Pass — Work harder! 💪';col='#ef4444';}
+  document.getElementById('gcls').textContent=cls;document.getElementById('gcls').style.color=col;
+  document.getElementById('gu').textContent='Total Units: '+tu;
+  toast('📊 CGPA: '+gpa+' — '+cls);
+}
+
+// ===== TIMETABLE =====
+let tLoaded=false,ttData={},ttDay='Monday';
+const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+DAYS.forEach(d=>ttData[d]=[]);
+function initTT(){tLoaded=true;document.getElementById('ttdays').innerHTML=DAYS.map(d=>`<button class="tdbtn${d===ttDay?' on':''}" onclick="selDay('${d}',this)">${d}</button>`).join('');renderTT();}
+function selDay(d,btn){ttDay=d;document.querySelectorAll('.tdbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderTT();}
+function renderTT(){const c=document.getElementById('ttslots'),s=ttData[ttDay];if(!s.length){c.innerHTML=`<div class="tslot empty"><span>No classes for ${ttDay}. Add below 👇</span></div>`;return;}c.innerHTML=s.map((x,i)=>`<div class="tslot"><span class="tbadge">${x.t}</span><div class="tsc" style="flex:1"><h4>${x.c}</h4><span>📍 ${x.v}</span></div><button class="delbtn" onclick="delSlot(${i})">✕</button></div>`).join('');}
+function addSlot(){const c=document.getElementById('ttc').value.trim(),t=document.getElementById('ttt').value.trim(),v=document.getElementById('ttv').value.trim();if(!c||!t){toast('⚠️ Enter course and time!');return;}ttData[ttDay].push({c,t,v:v||'TBA'});ttData[ttDay].sort((a,b)=>a.t.localeCompare(b.t));document.getElementById('ttc').value='';document.getElementById('ttt').value='';document.getElementById('ttv').value='';renderTT();toast('✅ Added to '+ttDay+'!');}
+function delSlot(i){ttData[ttDay].splice(i,1);renderTT();}
+
+// ===== POMODORO =====
+const PMINS={focus:25,short:5,long:15};
+let pMode='focus',pSecs=1500,pRunning=false,pInt=null,pCt=0;
+function setMode(m,btn){pMode=m;clearInterval(pInt);pRunning=false;document.querySelectorAll('.pmb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');pSecs=PMINS[m]*60;document.getElementById('pstart').textContent='▶ Start';updPom();}
+function updPom(){const m=String(Math.floor(pSecs/60)).padStart(2,'0'),s=String(pSecs%60).padStart(2,'0');document.getElementById('ptime').textContent=m+':'+s;document.getElementById('plbl').textContent=pRunning?({focus:'Stay focused! 💪',short:'Rest up ☕',long:'Relax well 😴'}[pMode]):'Ready to focus? 💪';}
+function togglePom(){if(pRunning){clearInterval(pInt);pRunning=false;document.getElementById('pstart').textContent='▶ Continue';}else{pRunning=true;document.getElementById('pstart').textContent='⏸ Pause';pInt=setInterval(()=>{pSecs--;updPom();if(pSecs<=0){clearInterval(pInt);pRunning=false;if(pMode==='focus'){pCt++;document.getElementById('pses').textContent=pCt;toast('🍅 Focus session done! Take a break.');}else toast('⏰ Break over! Time to focus.');document.getElementById('pstart').textContent='▶ Start';}},1000);}}
+function resetPom(){clearInterval(pInt);pRunning=false;pSecs=PMINS[pMode]*60;document.getElementById('pstart').textContent='▶ Start';updPom();}
+updPom();
+
+// ===== FLASHCARDS =====
+let fLoaded=false;
+const DECKS={
+  gst101:{l:'GST 101',cards:[
+    {q:'What is a noun?',a:'A word that names a person, place, thing or idea. E.g. "student", "Osogbo", "love".'},
+    {q:'What is a topic sentence?',a:'The main sentence in a paragraph that states its central idea, usually the first sentence.'},
+    {q:'Define comprehension',a:'The ability to read and understand a written text including its main ideas and implied meanings.'},
+    {q:'What is a thesis statement?',a:"A single sentence in an essay's introduction that clearly states the writer's main argument or claim."},
+    {q:"What are the 8 parts of speech?",a:'Noun, Pronoun, Verb, Adjective, Adverb, Preposition, Conjunction, Interjection.'},
+    {q:"What is 'register' in communication?",a:'The variety of language used in a particular context — formal (academic writing) vs informal (chatting).'},
+    {q:'Difference between denotation and connotation',a:'Denotation = literal dictionary meaning. Connotation = emotional/implied meaning.'},
+    {q:'What is a summary?',a:'A shortened version of a text that captures main points without unnecessary details.'},
+  ]},
+  gst103:{l:'GST 103',cards:[
+    {q:'When did Nigeria gain independence?',a:'1st October 1960 from British colonial rule.'},
+    {q:"Name Nigeria's three major ethnic groups",a:'Yoruba (South-West), Igbo (South-East), and Hausa-Fulani (North).'},
+    {q:"What is the significance of Lugard's Amalgamation of 1914?",a:'Lord Lugard merged the Northern and Southern Protectorates into one country called "Nigeria" on January 1, 1914.'},
+    {q:'Define culture',a:'Shared beliefs, values, customs, arts and social behaviour of a group passed down through generations.'},
+    {q:'Name two festivals in Osun State',a:'Osun-Osogbo Festival (UNESCO heritage) and the Ede Parapo Festival.'},
+    {q:'What does ECOWAS stand for?',a:'Economic Community of West African States — founded 1975 in Lagos for West African economic integration.'},
+    {q:'What is the pre-colonial period in Nigeria?',a:'Era before 1800s colonisation — when kingdoms like Oyo, Benin, Kanem-Bornu and Hausa states flourished.'},
+    {q:'What is the Nigerian coat of arms?',a:'Two white horses supporting a black shield with silver Y (Niger-Benue confluence). Eagle on top, flowers below.'},
+  ]},
+  gst107:{l:'GST 107 Logic',cards:[
+    {q:'What is philosophy?',a:"The study of fundamental questions about existence, knowledge, values, reason and language. From Greek 'love of wisdom'."},
+    {q:'Difference between inductive and deductive reasoning',a:'Deductive: general → specific (guaranteed if premises true). Inductive: specific → general (probable, not certain).'},
+    {q:'What is a fallacy?',a:'An error in reasoning that makes an argument invalid or misleading, even if the conclusion seems true.'},
+    {q:'What is the ad hominem fallacy?',a:"Attacking the person making an argument rather than the argument itself. e.g. 'You can't trust him, he failed last year.'"},
+    {q:'What is epistemology?',a:'The branch of philosophy that studies knowledge — what it is, how we acquire it, and its limits.'},
+    {q:"What is 'modus ponens'?",a:'A valid deductive form: If P then Q; P is true; therefore Q is true.'},
+    {q:'What is empiricism?',a:'The view that knowledge comes primarily from sensory experience. Key empiricists: Locke, Hume, Berkeley.'},
+    {q:'Define an argument in logic',a:'A set of statements (premises) that provide reasons/evidence for a conclusion.'},
+  ]},
+  mth:{l:'MTH 101 Maths',cards:[
+    {q:'What is a function in maths?',a:'A relation where every input (x) has exactly one output y. Written as f(x). E.g. f(x) = 2x + 3.'},
+    {q:'State the quadratic formula',a:'x = (−b ± √(b²−4ac)) / 2a, used to solve ax² + bx + c = 0.'},
+    {q:'What is the derivative of xⁿ?',a:'nxⁿ⁻¹ — this is the Power Rule of differentiation.'},
+    {q:'What is the Pythagorean theorem?',a:'a² + b² = c², where c is the hypotenuse of a right-angled triangle.'},
+    {q:'What is sin(90°)?',a:'sin(90°) = 1. Also: sin(0°) = 0, cos(0°) = 1, cos(90°) = 0, tan(45°) = 1.'},
+    {q:'Define a "set" in mathematics',a:'A well-defined collection of distinct objects called elements. E.g. A = {1, 2, 3, 4, 5}.'},
+    {q:'What does "limit" mean in calculus?',a:'The value a function approaches as the input approaches a certain point. Notation: lim(x→a) f(x).'},
+    {q:'What is integration the reverse of?',a:'Differentiation. Integration finds area under a curve; differentiation finds slope/rate of change.'},
+  ]},
+  gst105:{l:'GST 105 Science',cards:[
+    {q:'What is science?',a:'A systematic method of acquiring knowledge through observation, hypothesis, experimentation and conclusion.'},
+    {q:'Who is called the father of modern science?',a:'Galileo Galilei (1564–1642) — pioneered experimental science and supported the heliocentric model.'},
+    {q:'What is the Scientific Revolution?',a:'Period ~1543–1687 when science challenged Church teachings. Key figures: Copernicus, Galileo, Newton.'},
+    {q:"State Newton's First Law of Motion",a:'An object at rest stays at rest, and an object in motion stays in motion, unless acted on by an external force.'},
+    {q:'Difference between science and technology',a:'Science = systematic knowledge of natural world. Technology = practical application of that knowledge.'},
+    {q:'What did Charles Darwin propose?',a:"Theory of evolution by natural selection (1859, 'On the Origin of Species') — survival of the fittest."},
+    {q:'What is a hypothesis?',a:'A testable, specific prediction about what will happen in an experiment, based on initial observations.'},
+    {q:'Name two African contributions to early science',a:'Egyptian geometry (pyramids) and Timbuktu scholars (Mali) who produced thousands of scientific manuscripts.'},
+  ]},
+};
+let cDeck='gst101',cIdx=0,isFlip=false;
+function initFlash(){fLoaded=true;document.getElementById('ftabs').innerHTML=Object.entries(DECKS).map(([k,v],i)=>`<button class="ftab${i===0?' on':''}" onclick="setDeck('${k}',this)">${v.l}</button>`).join('');loadCard();}
+function setDeck(id,btn){cDeck=id;cIdx=0;isFlip=false;document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('on'));btn.classList.add('on');document.getElementById('c3d').classList.remove('flip');loadCard();}
+function loadCard(){const d=DECKS[cDeck].cards,c=d[cIdx];document.getElementById('cq').textContent=c.q;document.getElementById('ca').textContent=c.a;document.getElementById('cct').textContent=`${cIdx+1} / ${d.length}`;document.getElementById('prev').disabled=cIdx===0;document.getElementById('nxt').disabled=cIdx===d.length-1;isFlip=false;document.getElementById('c3d').classList.remove('flip');}
+function flipCard(){isFlip=!isFlip;document.getElementById('c3d').classList.toggle('flip',isFlip);}
+function nextC(){if(cIdx<DECKS[cDeck].cards.length-1){cIdx++;loadCard();}}
+function prevC(){if(cIdx>0){cIdx--;loadCard();}}
+
+// ===== CHAT =====
+let cLoaded=false;
+const AREP={
+  'register':'To register courses: 1) Go to portal.uniosun.edu.ng 2) Log in with matric number 3) Click "Course Registration" 4) Select courses 5) Submit & print slip. Pay fees first! 4TIMZ will confirm when back online 😊',
+  'acceptance':'UNIOSUN acceptance fee is ₦50,000 for 2025/26. Pay ONLY via Remita at admissions.uniosun.edu.ng. Never pay any private account! 📋',
+  'lectures':'First-year lectures usually begin 2–3 weeks after matriculation. Check the news tab here and watch uniosun.edu.ng for official dates. 4TIMZ will update you!',
+  'college':'Depends on your JAMB combo & interest! CSET=Osogbo, Health Sciences=Osogbo, Law=Ifetedo, Management=Okuku, Humanities=Ikire, Education=Ipetu-Ijesa, Agric=Ejigbo. Ask 4TIMZ for personal advice!',
+  'gpa':'GPA = Total Grade Points ÷ Total Credit Units. Use our free GPA Calculator on this site (click 🎓 GPA tab)! UNIOSUN uses 5.0 scale: A=5, B=4, C=3, D=2, F=0.',
+  'scholarship':'UNIOSUN scholarships: 1) WAPCo (₦878,040 each) 2) Osun Dev Forum Texas (₦100,000) 3) NELFUND Federal Loan 4) Ajara Foundation 5) UNIOSUN Staff Group. Check News tab for updates!',
+  'hostel':'UNIOSUN has on-campus accommodation at Osogbo main campus. Many students also stay in Osogbo town. Call 08107976419 for official hostel info. 4TIMZ will share more when online!',
+  'fee':'School fees vary by faculty — typically ₦70,000–₦150,000 per session for state students. Check the student portal after admission. Always pay via official Remita only!',
+  'portal':'Student portal is at portal.uniosun.edu.ng — log in with your matric number. For issues, WhatsApp support: 09119994001 (strictly WhatsApp only).',
+  'matric':'Matriculation at UNIOSUN is usually a few weeks into the session. You get notified via portal and university email. Complete your registration first!',
+};
+function initChat(){cLoaded=true;document.getElementById('cbox').innerHTML='';addBot("Hey! 👋 I'm the Study Hive AI, standing in for 4TIMZ right now. Ask me anything about UNIOSUN — registration, fees, scholarships, college guide. 4TIMZ will see your message and reply personally when he's back online! 🐝");}
+function addBot(t){const b=document.getElementById('cbox'),d=document.createElement('div');d.className='msg b';const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});d.innerHTML=`<div class="mbub">${t}</div><span class="mtime">AI for 4TIMZ · ${now}</span>`;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+function addUser(t){const b=document.getElementById('cbox'),d=document.createElement('div');d.className='msg u';const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});d.innerHTML=`<div class="mbub">${t}</div><span class="mtime">You · ${now}</span>`;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+function showTyp(){const b=document.getElementById('cbox'),d=document.createElement('div');d.className='msg b';d.id='typ';d.innerHTML='<div class="typing"><span></span><span></span><span></span></div>';b.appendChild(d);b.scrollTop=b.scrollHeight;}
+function hideTyp(){const t=document.getElementById('typ');if(t)t.remove();}
+function getReply(m){
+  const l=m.toLowerCase();
+  for(const[k,v]of Object.entries(AREP)){if(l.includes(k))return v+'\n\n📲 4TIMZ is offline but will see this and reply soon. You can WhatsApp directly using the button below!';}
+  const fb=["Great question! I'm the AI covering for 4TIMZ. I'll make sure he sees this. For now, try uniosun.edu.ng or call 08107976419. 4TIMZ will be back online soon! 📲","I want to give you accurate info so I'll pass this to 4TIMZ directly — he'll reply when online. WhatsApp him if it's urgent using the button below! 👇","Good one! This is better answered by 4TIMZ himself since he's a UNIOSUN student. Message logged — he'll see it when back. Use the WhatsApp button below if urgent 🙂","I'm the AI covering for 4TIMZ right now. Your question has been noted and he'll respond personally when available. Meanwhile the UNIOSUN portal at portal.uniosun.edu.ng might help! 💚"];
+  return fb[Math.floor(Math.random()*fb.length)];
+}
+function sendMsg(){const i=document.getElementById('cin'),m=i.value.trim();if(!m)return;addUser(m);i.value='';showTyp();setTimeout(()=>{hideTyp();addBot(getReply(m));},1100+Math.random()*700);}
+function qsend(m){if(!cLoaded)initChat();addUser(m);showTyp();setTimeout(()=>{hideTyp();addBot(getReply(m));},1100+Math.random()*700);}
+
+// ===== NEWS =====
+let nLoaded=false,nCat='all';
+const NEWS=[
+  {b:'Scholarships',t:'WAPCo Awards ₦6.1 Million Scholarships to 7 UNIOSUN Students',s:'Seven UNIOSUN students secured scholarships worth ₦878,040 each under the 2025/2026 WAPCo Annual Scholarship Scheme.',d:'Feb 2026',c:'scholarships',u:'https://www.uniosun.edu.ng/'},
+  {b:'Achievements',t:"Canada's Deputy High Commissioner Visits UNIOSUN for Strategic Partnership",s:'Carlos Rojas-Arbulu led a delegation exploring partnership opportunities between Canada and Osun State University.',d:'Feb 2026',c:'achievements',u:'https://www.uniosun.edu.ng/'},
+  {b:'Academic',t:'1st International Conference on Public Health & Wellbeing (ICPHW-2026)',s:'UNIOSUN Dept of Public Health presents its 1st International Conference — open to all students and researchers.',d:'Jan 2026',c:'academic',u:'https://www.uniosun.edu.ng/'},
+  {b:'Achievements',t:"UNIOSUN's Prof. Charles Adetunji Ranked #1 Among Nigeria's Top 500 Scholars",s:"Six UNIOSUN staff featured among Nigeria's Top 500 Scholars, with Prof. Adetunji emerging as Number One nationally.",d:'Jan 2026',c:'achievements',u:'https://www.uniosun.edu.ng/'},
+  {b:'Admissions',t:'VC Welcomes 11,385 New Students to UNIOSUN for 2025/2026 Session',s:'VC Prof. Odunayo Adebooye welcomed 11,385 new students selected from over 41,000 applicants.',d:'Nov 2025',c:'admissions',u:'https://www.uniosun.edu.ng/'},
+  {b:'Admissions',t:'UNIOSUN 2025/2026 Final Admission List Released — Acceptance Fee ₦50,000',s:'Final UTME list released. All admitted students must pay ₦50,000 acceptance fee via UNIOSUN Remita platform.',d:'Oct 2025',c:'admissions',u:'https://admissions.uniosun.edu.ng'},
+  {b:'Achievements',t:'UNIOSUN Wins 2 of 158 Competitive FG National Research Fund Grants',s:'Osun State University won 2 competitive grants in the 2025 FG National Research Fund cycle nationwide.',d:'Sep 2025',c:'achievements',u:'https://www.uniosun.edu.ng/'},
+  {b:'Scholarships',t:'29 UNIOSUN Students Receive Scholarship Cheques at Osogbo Campus',s:'VC presented cheques to 29 beneficiaries from Osun Dev Forum Texas, Hon. Sunday Olowu, ECOSA and others.',d:'Jun 2025',c:'scholarships',u:'https://www.uniosun.edu.ng/'},
+  {b:'Achievements',t:"Prof. Olukoya Ogen Elected Fellow of Royal Historical Society UK",s:'Prof. Ogen became only the second Nigerian elected Fellow of the prestigious Royal Historical Society, UK.',d:'2025',c:'achievements',u:'https://www.uniosun.edu.ng/'},
+  {b:'Academic',t:'NELFUND Student Loan Portal Open for UNIOSUN Students',s:'UNIOSUN committed to helping students access the Federal Government NELFUND loan scheme. Watch portal for deadlines.',d:'Oct 2025',c:'academic',u:'https://www.uniosun.edu.ng/'},
+  {b:'Achievements',t:'PhD Student Oluwadamilare Dauda Wins International Young Researcher Award',s:'Final-year UNIOSUN PhD student made Nigeria proud by winning a prestigious Young Researcher award.',d:'2025',c:'achievements',u:'https://www.uniosun.edu.ng/'},
+  {b:'Academic',t:'UNIOSUN Mourns Prof. Siyan Oyeweso, Provost of Postgraduate College',s:"Management announced the passing of Prof. Siyan Oyeweso, one of UNIOSUN's most distinguished foundation scholars.",d:'Nov 2025',c:'academic',u:'https://www.uniosun.edu.ng/'},
+];
+function loadNews(){nLoaded=true;const g=document.getElementById('ngrid');g.innerHTML='<div class="nload"><div class="spin"></div><p>Loading UNIOSUN news...</p></div>';setTimeout(()=>{const data=nCat==='all'?NEWS:NEWS.filter(n=>n.c===nCat);g.innerHTML=data.map(n=>`<div class="ncard" onclick="window.open('${n.u}','_blank')"><span class="nbadge">${n.b}</span><div class="nbody"><h3>${n.t}</h3><p>${n.s}</p></div><div class="nfoot"><span>📅 ${n.d}</span><a href="${n.u}" target="_blank">Read →</a></div></div>`).join('');},800);}
+function fnews(cat,btn){nCat=cat;document.querySelectorAll('.nfbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');loadNews();}
+function rfnews(){toast('🔄 Refreshing...');loadNews();}
+
+// ===== RESOURCES =====
+let rLoaded=false;
+const SUBS=[
+  {id:'gst101',l:'GST 101',e:'📝',d:'Use of English I — Grammar, Essays, Comprehension.',vs:[{t:'Use of English Full 100L Lecture',id:'K2x1DM3Z5Eg',tg:'GST 101'},{t:'Essay Writing Techniques — Nigerian University',id:'1J_kbAnMp0U',tg:'Essay'},{t:'English Grammar for University Students',id:'8JnLLqnFcS8',tg:'Grammar'},{t:'Summary Writing Tips Nigeria',id:'xdXg_1Nd3Fs',tg:'Summary'}]},
+  {id:'gst103',l:'GST 103',e:'🇳🇬',d:'Nigerian Peoples & Culture — History, Ethnic Groups, Government.',vs:[{t:'Nigerian Peoples and Culture Full Lecture',id:'3gHNEkHxVe0',tg:'GST 103'},{t:'History of Nigeria — Pre-colonial to Independence',id:'cTDMPaGMXlA',tg:'History'},{t:'Nigerian Government Structure',id:'zFwMLG2Q8EM',tg:'Govt'},{t:'Major Ethnic Groups of Nigeria',id:'WnKk9RBP0e8',tg:'Culture'}]},
+  {id:'gst107',l:'GST 107',e:'🧠',d:'Philosophy & Logic — Arguments, Fallacies, Critical Thinking.',vs:[{t:'Introduction to Philosophy & Logic 100L',id:'BNyklO8aB5A',tg:'GST 107'},{t:'Logic: Inductive vs Deductive Reasoning',id:'Wd_3Y4c0P7Q',tg:'Logic'},{t:'Fallacies Explained with Examples',id:'VmjKaAqw-YM',tg:'Fallacies'},{t:'Critical Thinking Skills Complete Guide',id:'HnJ1bqFMgH0',tg:'Thinking'}]},
+  {id:'gst105',l:'GST 105',e:'🔬',d:'History & Philosophy of Science — Scientific Method.',vs:[{t:'History and Philosophy of Science Full',id:'nYg6jAMkXTQ',tg:'GST 105'},{t:'Scientific Method Simply Explained',id:'yi0hwFDGTuE',tg:'Method'},{t:'History of Science Ancient to Modern',id:'4gGXtqFLJDA',tg:'History'},{t:'Technology and Society Philosophy',id:'G2Z1UMiIEIw',tg:'Tech'}]},
+  {id:'mth',l:'MTH 101',e:'🔢',d:'Mathematics — Calculus, Algebra, Trigonometry.',vs:[{t:'100L Mathematics Calculus Introduction',id:'WsQQvHm4lSw',tg:'Calculus'},{t:'Algebra Fundamentals University Level',id:'MHeirBPOI6w',tg:'Algebra'},{t:'Trigonometry Complete Course',id:'PUB0TaZ7bhA',tg:'Trig'},{t:'Limits and Derivatives Explained',id:'kfF40MiS7zA',tg:'Calculus'}]},
+  {id:'phy',l:'PHY 101',e:'⚡',d:'Physics — Mechanics, Waves, Thermodynamics, Electricity.',vs:[{t:'100L Physics Complete Mechanics',id:'ZM8ECpBuQYE',tg:'Mechanics'},{t:'Waves and Oscillations University Physics',id:'tJW_a6JeXD8',tg:'Waves'},{t:'Thermodynamics Basics 100 Level',id:'4i1MdPjQkLg',tg:'Thermo'},{t:'Electricity and Magnetism Full Lecture',id:'mc979OhitAg',tg:'Electricity'}]},
+  {id:'che',l:'CHE 101',e:'🧪',d:'Chemistry — Atomic Theory, Bonding, Organic & Inorganic.',vs:[{t:'Atomic Structure and Bonding 100L',id:'5YNPkMKOGcE',tg:'Atomic'},{t:'Organic Chemistry Introduction',id:'Iqe52JVBALY',tg:'Organic'},{t:'Chemical Bonding Ionic Covalent',id:'I3QKZUF0suM',tg:'Bonding'},{t:'Inorganic Chemistry Basics',id:'wENonE4g2os',tg:'Inorganic'}]},
+  {id:'eco',l:'ECO 101',e:'📈',d:'Economics — Micro & Macro, Demand & Supply, Markets.',vs:[{t:'Introduction to Economics 100L Nigeria',id:'8J-7mMoISu8',tg:'ECO 101'},{t:'Demand and Supply Complete',id:'g9aDizJpd0s',tg:'Micro'},{t:'Macroeconomics GDP Inflation',id:'d8RH0jDjQoE',tg:'Macro'},{t:'Market Structures Monopoly Competition',id:'6xyI5NNCe-U',tg:'Markets'}]},
+];
+function buildRes(){rLoaded=true;document.getElementById('stabs').innerHTML=SUBS.map((s,i)=>`<button class="stab${i===0?' on':''}" onclick="showSub('${s.id}',this)">${s.e} ${s.l}</button>`).join('');document.getElementById('rescont').innerHTML=SUBS.map((s,i)=>`<div id="p-${s.id}" style="display:${i===0?'block':'none'}"><div class="subtit">${s.e} ${s.l}</div><div class="subdesc">${s.d}</div><div class="vgrid">${s.vs.map(v=>`<div class="vc"><div class="vt"><iframe src="https://www.youtube.com/embed/${v.id}?rel=0&modestbranding=1" title="${v.t}" allowfullscreen loading="lazy"></iframe></div><div class="vi"><h4>${v.t}</h4><span class="vtag">${v.tg}</span></div></div>`).join('')}</div></div>`).join('');}
+function showSub(id,btn){document.querySelectorAll('[id^="p-"]').forEach(p=>p.style.display='none');document.querySelectorAll('.stab').forEach(t=>t.classList.remove('on'));document.getElementById('p-'+id).style.display='block';btn.classList.add('on');}
+
+setInterval(()=>{if(document.getElementById('pg-news').classList.contains('on')){loadNews();toast('📰 News refreshed!');}},600000);
+setTimeout(()=>{buildRes();initFlash();initGPA();},1000);
+</script>
+</body>
+</html>
